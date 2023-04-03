@@ -1,0 +1,4 @@
+[paths]
+source = 
+    SFR/src/sfrout
+    */site-packages/sfrout

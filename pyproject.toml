@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sfrout"
+version = "0.0.6"
+authors = [
+  {name="Lukasz Hoszowski", email="lukasz.hoszowski@mail.com"},
+]
+description = "Scalable, asynchronious SalesForce (SFDC) report downloader for SSO/SAML clients"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Intended Audience :: End Users/Desktop",
+]
+
+dependencies = [
+  'requests >= 2.28.2, < 3',
+  'aiodns >= 3.0.0, < 4',
+  'aiohttp >= 3.8.4, < 4',
+  'asyncio >= 3.4.3, < 4',
+  'pandas >= 1.5.3, < 2',
+  'tqdm >= 4.64.1, < 5',
+  'browser-cookie3 >= 0.17.0, < 1',
+  'click >= 8.1.3, < 9',
+  'tabulate >= 0.9.0, < 1'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/LukaszHoszowski/SF-s_Rout-SFR"
+"Bug Tracker" = "https://github.com/LukaszHoszowski/SF-s_Rout-SFR/issues"
+
+[project.scripts]
+sfrout = "sfrout.cli:cli"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--strict-markers",
+    "--strict-config",
+    "-ra"
+]
+
+pythonpath = [
+  'src', 'src/sfrout'
+]
