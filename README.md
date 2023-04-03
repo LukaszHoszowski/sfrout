@@ -54,7 +54,7 @@ sfrout.run(domain="https://corp.my.salesforce.com/",
 
 - fill in reports.csv file according to given template
 
-[Input file template](https://github.com/user/repo/blob/branch/example/reports-default.csv)
+[Input file template](https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv)
 
 - execute the script
 
@@ -78,7 +78,7 @@ sfrout "https://corp.my.salesforce.com/" "C:\\path\\to\\reports.csv"
 
 - fill in reports.csv file according to given template
 
-[Input file template](https://github.com/user/repo/blob/branch/example/reports-default.csv)
+[Input file template](https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv)
 
 CLI interface allow you to configure parameters according to below list:
 

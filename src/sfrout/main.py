@@ -36,7 +36,7 @@ def run(*,
 
     :param domain: SalesForce domain of your organization -> "https://corp.my.salesforce.com/"
     :type domain: str    
-    :param reports_path: Path to reports.csv file, template -> https://github.com/user/repo/blob/branch/example/reports-default.csv
+    :param reports_path: Path to reports.csv file, template -> https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv
     :type reports_path: str
     :param reports_list: List of the reports as dictionaries -> [{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}
     :type reports_list: list[dict[str, str]]
