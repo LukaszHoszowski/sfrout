@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main &mdash; sfrout 0.0.7 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sfrout
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sfrout</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3.11</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">sfrout is a scalable, asynchronous SalesForce report downloader for SAML/SSO clients. The app allows you to download reports based on their ID </span>
+<span class="sd">using your personal SFDC account. Supports asynchronous requests, threaded processing of the files, logging to rotating file and stdout, produces </span>
+<span class="sd">summary report for the session. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">Queue</span>
+
+<span class="kn">from</span> <span class="nn">components.connectors</span> <span class="kn">import</span> <span class="n">SfdcConnector</span>
+<span class="kn">from</span> <span class="nn">components.containers</span> <span class="kn">import</span> <span class="n">ReportsContainer</span>
+<span class="kn">from</span> <span class="nn">components.handlers</span> <span class="kn">import</span> <span class="n">WorkerFactory</span>
+<span class="kn">from</span> <span class="nn">components.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">components.loggers</span> <span class="kn">import</span> <span class="n">logger_configurer</span>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../index.html#main.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">reports_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">reports_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">summary_filepath</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">log_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> 
+        <span class="n">report</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> 
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> 
+        <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+        <span class="n">stdout_loglevel</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> 
+        <span class="n">file_loglevel</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> 
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function of the program.</span>
+
+<span class="sd">    :param domain: SalesForce domain of your organization -&gt; &quot;https://corp.my.salesforce.com/&quot;</span>
+<span class="sd">    :type domain: str    </span>
+<span class="sd">    :param reports_path: Path to reports.csv file, template -&gt; https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv</span>
+<span class="sd">    :type reports_path: str</span>
+<span class="sd">    :param reports_list: List of the reports as dictionaries -&gt; ``[{&#39;name&#39;: &#39;RaportName&#39;, &#39;id&#39;: &#39;00O1V00000999GHES&#39;, &#39;path&#39;: WindowsPath(&#39;C:/downloads&#39;)}]``</span>
+<span class="sd">    :type reports_list: list[dict[str, str]]</span>
+<span class="sd">    :param summary_filepath: File path to summary report -&gt; ``C:/downloads/summary.csv``</span>
+<span class="sd">    :type summary_filepath: str</span>
+<span class="sd">    :param log_path: Path to log file -&gt; ``C:/downloads/logs/``</span>
+<span class="sd">    :type log_path: str</span>
+<span class="sd">    :param report: Single report mode -&gt; ``RaportName,00O1V00000999GHES,C:/downloads``</span>
+<span class="sd">    :type report: str</span>
+<span class="sd">    :param path: Save location path override -&gt; ``C:/new_downloads``</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param threads: Number of threads to use. (Default: ``half of available threads of the machine``) </span>
+<span class="sd">    :type threads: int</span>
+<span class="sd">    :param stdout_loglevel: Log level for stdout logging -&gt; ``[&#39;critical&#39;|&#39;error&#39;|&#39;warn&#39;|&#39;warning&#39;|&#39;info&#39;|&#39;debug&#39;]`` (Default: ``WARNING``)</span>
+<span class="sd">    :type stdout_loglevel: str</span>
+<span class="sd">    :param file_loglevel: Log level for file logging -&gt; ``[&#39;critical&#39;|&#39;error&#39;|&#39;warn&#39;|&#39;warning&#39;|&#39;info&#39;|&#39;debug&#39;]`` (Default: ``WARNING``)</span>
+<span class="sd">    :type file_loglevel: str </span>
+<span class="sd">    :param verbose: Toggles between Progress Bar and stdout logging (Default: ``False``)</span>
+<span class="sd">    :type verbose: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">reports_csv_path</span><span class="o">=</span><span class="n">reports_path</span><span class="p">,</span>
+                    <span class="n">reports_list</span><span class="o">=</span><span class="n">reports_list</span><span class="p">,</span>
+                    <span class="n">summary_filepath</span><span class="o">=</span><span class="n">summary_filepath</span><span class="p">,</span>
+                    <span class="n">log_path</span><span class="o">=</span><span class="n">log_path</span><span class="p">,</span>
+                    <span class="n">report</span><span class="o">=</span><span class="n">report</span><span class="p">,</span> 
+                    <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> 
+                    <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
+                    <span class="n">stdout_loglevel</span><span class="o">=</span><span class="n">stdout_loglevel</span><span class="p">,</span> 
+                    <span class="n">file_loglevel</span><span class="o">=</span><span class="n">file_loglevel</span><span class="p">,</span> 
+                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+                    <span class="p">)</span>
+
+    <span class="n">logger_main</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">logger_configurer</span><span class="p">(</span><span class="n">stdout_loglevel</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">stdout_loglevel</span><span class="p">,</span>
+                      <span class="n">file_loglevel</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">file_loglevel</span><span class="p">,</span>
+                      <span class="n">log_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">log_path</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+                      
+
+    <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;SFR started&#39;</span><span class="p">)</span>
+
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>    
+
+    <span class="n">connector</span> <span class="o">=</span> <span class="n">SfdcConnector</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> 
+                              <span class="n">domain</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+                              <span class="n">verbose</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">connector</span><span class="o">.</span><span class="n">check_connection</span><span class="p">()</span>
+    
+    <span class="n">container</span> <span class="o">=</span> <span class="n">ReportsContainer</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">report_params_list</span><span class="p">,</span> 
+                                 <span class="n">config</span><span class="o">.</span><span class="n">summary_filepath</span><span class="p">)</span>
+    
+    <span class="n">WorkerFactory</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> 
+                  <span class="n">threads</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
+
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">connector</span><span class="o">.</span><span class="n">handle_requests</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">reports_list</span><span class="p">))</span>
+
+    <span class="n">queue</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+     
+    <span class="n">container</span><span class="o">.</span><span class="n">create_summary_report</span><span class="p">()</span>
+
+    <span class="n">container</span><span class="o">.</span><span class="n">print_summary_table</span><span class="p">()</span>
+
+    <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;SFR finished in </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+        <span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Lukasz Hoszowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

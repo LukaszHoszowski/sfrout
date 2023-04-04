@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sfrout"
-version = "0.0.6"
+version = "0.0.8"
 authors = [
   {name="Lukasz Hoszowski", email="lukasz.hoszowski@mail.com"},
 ]
@@ -32,11 +32,11 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/LukaszHoszowski/SF-s_Rout-SFR"
-"Bug Tracker" = "https://github.com/LukaszHoszowski/SF-s_Rout-SFR/issues"
+"Homepage" = "https://github.com/LukaszHoszowski/sfrout"
+"Bug Tracker" = "https://github.com/LukaszHoszowski/sfrout/issues"
 
 [project.scripts]
-sfrout = "sfrout.cli:cli"
+sfrout = "sfrout.app.cli:cli"
 
 [tool.pytest.ini_options]
 addopts = [

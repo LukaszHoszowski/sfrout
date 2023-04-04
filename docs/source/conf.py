@@ -20,7 +20,9 @@ release = '0.0.7'
 
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
-              'sphinx.ext.napoleon']
+              'sphinx.ext.napoleon',
+              'sphinx.ext.duration',
+              'sphinx.ext.coverage']
 
 templates_path = ['_templates']
 exclude_patterns = []

@@ -12,11 +12,11 @@ import logging
 
 from queue import Queue
 
-from .components.connectors import SfdcConnector
-from .components.containers import ReportsContainer
-from .components.handlers import WorkerFactory
-from .components.config import Config
-from .components.loggers import logger_configurer
+from components.connectors import SfdcConnector
+from components.containers import ReportsContainer
+from components.handlers import WorkerFactory
+from components.config import Config
+from components.loggers import logger_configurer
 
 
 def run(*,
@@ -38,21 +38,21 @@ def run(*,
     :type domain: str    
     :param reports_path: Path to reports.csv file, template -> https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv
     :type reports_path: str
-    :param reports_list: List of the reports as dictionaries -> [{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}
+    :param reports_list: List of the reports as dictionaries -> ``[{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}]``
     :type reports_list: list[dict[str, str]]
-    :param summary_filepath: File path to summary report -> 'C:/downloads/summary.csv'
+    :param summary_filepath: File path to summary report -> ``C:/downloads/summary.csv``
     :type summary_filepath: str
-    :param log_path: Path to log file -> 'C:/downloads/logs/'
+    :param log_path: Path to log file -> ``C:/downloads/logs/``
     :type log_path: str
-    :param report: Single report mode -> 'RaportName,00O1V00000999GHES,C:/downloads'
+    :param report: Single report mode -> ``RaportName,00O1V00000999GHES,C:/downloads``
     :type report: str
-    :param path: Save location path override -> 'C:/new_downloads'
+    :param path: Save location path override -> ``C:/new_downloads``
     :type path: str
-    :param threads: Number of threads to use. (Default: half of available threads of the machine) 
+    :param threads: Number of threads to use. (Default: ``half of available threads of the machine``) 
     :type threads: int
-    :param stdout_loglevel: Log level for stdout logging -> ['critical'|'error'|'warn'|'warning'|'info'|'debug'] (Default: ``WARNING``)
+    :param stdout_loglevel: Log level for stdout logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` (Default: ``WARNING``)
     :type stdout_loglevel: str
-    :param file_loglevel: Log level for file logging -> ['critical'|'error'|'warn'|'warning'|'info'|'debug'] (Default: ``WARNING``)
+    :param file_loglevel: Log level for file logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` (Default: ``WARNING``)
     :type file_loglevel: str 
     :param verbose: Toggles between Progress Bar and stdout logging (Default: ``False``)
     :type verbose: bool

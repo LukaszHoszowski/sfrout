@@ -1,4 +1,4 @@
 from .main import *
-from .cli import *
+from .app.cli import *
 
 __all__ = ['run', 'cli']

@@ -42,7 +42,7 @@ pip install sfrout
 
 ### Python interface
 
-- create a python file and pase in below script. Amend domain and path to your reports file
+- create a python file and paste in below script. Amend domain and path to your reports file
 
 ```python
 import sfrout
@@ -174,8 +174,8 @@ This app has been created based on environment of my organization. There is alte
 
 ## Release Notes
 
-[Changelog](CHANGELOG.md)
+[Changelog](https://github.com/LukaszHoszowski/sfrout/blob/main/CHANGELOG.md)
 
 ## License
 
-[Apache 2.0](LICENSE.md)
+[Apache 2.0](https://github.com/LukaszHoszowski/sfrout/blob/main/LICENSE.md)
