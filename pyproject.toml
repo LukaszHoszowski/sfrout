@@ -4,17 +4,18 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sfrout"
-version = "0.0.11"
+version = "0.0.13"
 authors = [
   {name="Lukasz Hoszowski", email="lukasz.hoszowski@mail.com"},
 ]
 description = "Scalable, asynchronious SalesForce (SFDC) report downloader for SSO/SAML clients"
 readme = "README.md"
 requires-python = ">=3.11"
+keywords = ["SalesForce", "SFDC", "Report"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache-2.0 License",
     "Operating System :: Microsoft :: Windows :: Windows 10",
     "Intended Audience :: End Users/Desktop",
 ]

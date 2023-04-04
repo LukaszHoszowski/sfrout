@@ -146,19 +146,16 @@ class SfdcConnector():
 
         """
         logger_main.warning(
-            'SID not found! -> Login to SFDC -> SalesForce webpage will open shortly')
-        sleep(2)
+            'SID not valid! -> Login to SFDC -> SalesForce webpage will open shortly')
 
         logger_main.debug('Openning SFDC webside to log in to SalesForce')
+        
+        self.sid = ""
         webbrowser.get(self.edge_path).open(self.domain)
 
         logger_main.debug(
-            "Starting 30 sec sleep to let user log in to SalesForce")
-        sleep(30)
-        while not self.sid:
-            self.sid = self._intercept_sid()
-            logger_main.info('intercepting SID! Hold on tight!')
-            sleep(2)
+            "Starting 20 sec sleep to let user log in to SalesForce")
+        sleep(20)
 
         return None
     
@@ -185,7 +182,7 @@ class SfdcConnector():
             self.sid = ""
             self.sid_valid = False
             self.check = False
-
+            
             return False
           
     def check_connection(self) -> bool:
@@ -194,21 +191,19 @@ class SfdcConnector():
         :return: Flag, True if connection was successful, False wasn't.
         :rtype: bool
         """
+        logger_main.info("SID checking in progress ...")
+
         self._parse_headers()
-        
-        while not self.check:
-            self.sid = self._intercept_sid()
+        self.sid = self._intercept_sid()
+        self._sid_check()
 
-            logger_main.info("SID checking in progress ...")
-
-            if not self.sid:
-                self._open_sfdc_site()
-
-            logger_main.info('SID found!')
-
-            logger_main.debug("Checking SID validity")
-            
-            if not self.sid_valid:
+        if not self.sid:
+            self._open_sfdc_site()
+                
+            while not self.sid_valid:
+                logger_main.info('intercepting SID! Hold on tight!')
+                self.sid = self._intercept_sid()
+                sleep(2)
                 self._sid_check()
                 
         return True
