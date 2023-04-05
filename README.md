@@ -3,23 +3,6 @@
 ![Wheel Support Badge](https://img.shields.io/pypi/wheel/sfrout.svg)
 ![Python Version Support Badge](https://img.shields.io/pypi/pyversions/sfrout.svg)
 
-
-.. image:: https://static.pepy.tech/badge/sfrout
-    :target: https://static.pepy.tech/badge/sfrout
-    :alt: SFrout Downloads
-    
-.. image:: https://img.shields.io/pypi/l/sfrout.svg
-    :target: https://pypi.org/project/sfrout/
-    :alt: License Badge
-
-.. image:: https://img.shields.io/pypi/wheel/sfrout.svg
-    :target: https://pypi.org/project/sfrout/
-    :alt: Wheel Support Badge
-
-.. image:: https://img.shields.io/pypi/pyversions/sfrout.svg
-    :target: https://pypi.org/project/sfrout/
-    :alt: Python Version Support Badge
-
 # SFrout - Sales Force Report Downloader
 
 ## What is it?
