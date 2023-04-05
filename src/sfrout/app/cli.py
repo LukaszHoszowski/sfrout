@@ -11,6 +11,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.argument('domain', type=click.STRING)
 @click.argument('reports_path', required=False, type=click.Path(exists=True))
 @click.option('--summary_filepath', '-s', required=False, type=click.Path(exists=True), help='Path to the summary report -> c:/summary_report.csv')
+@click.option('--log_path', '-l', required=False, type=click.Path(exists=True), help='Path to the log file -> c:/log')
 @click.option('--report', '-r', type=click.STRING, help='Run single report -> "name,id,path,optional_report_params"')
 @click.option('--path', '-p', type=click.Path(exists=True), help='Override save location of the reports')
 @click.option('--threads', '-t', type=click.INT, default=0, show_default=True, help='Number of threads to spawn')
@@ -31,12 +32,14 @@ def cli(domain: str,
          verbose=False,
          ):
     """
-    SFR is a simple, but very efficient due to scalability, Python application which allows you to download various reports.  
-    Program supports asynchronous requests and threading for saving/processing content. Logging and CLI parameters handlig is also included.
-
-    So far the App supports SFDC reports with SSO authentication.
+    SFrout is a scalable, asynchronous SalesForce report downloader for SAML/SSO clients. The app allows you to download reports based on their ID 
+    using your personal SFDC account. Supports asynchronous requests, threaded processing of the files, logging to rotating file and stdout, produces 
+    summary report for the session. 
+    
+    Usage::
+    
+        $ sfrout "https://corp.my.salesforce.com/" "C:\\path\\to\\reports.csv"
     """
-
     run(domain=domain,
         reports_path=reports_path,
         summary_filepath=summary_filepath,

@@ -3,7 +3,7 @@ import csv
 import logging
 
 from pathlib import Path
-from typing import Any, Optional, Protocol
+from typing import Any, Protocol
 
 logger_main = logging.getLogger(__name__)
 
@@ -35,6 +35,15 @@ class ConfigProtocol(Protocol):
 
 class Config:
     """Concrete class representing Config object. Contains entire configuration required for a program.
+    
+    :param reports_list_path: CLI argument for input report list path.
+    :type reports_list_path: str
+    :param report: CLI argument for single report params.
+    :type report: str
+    :param path: CLI argument for save location path override.
+    :type path: str
+    :param threads: CLI argument for number of threads to use.
+    :type threads: int
     """
 
     def __init__(self,
@@ -50,17 +59,6 @@ class Config:
                  stdout_loglevel: str = "WARNNING", 
                  file_loglevel: str = "INFO",
                  verbose=False):
-        """Concrete class representing ReportContainer object. 
-
-        :param reports_list_path: CLI argument for input report list path.
-        :type reports_list_path: str
-        :param report: CLI argument for single report params.
-        :type report: str
-        :param path: CLI argument for save location path override.
-        :type path: str
-        :param threads: CLI argument for number of threads to use.
-        :type threads: int
-        """
 
         self.domain: str = domain
         self.reports_csv_path: str = reports_csv_path

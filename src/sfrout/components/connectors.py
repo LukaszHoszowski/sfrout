@@ -18,7 +18,7 @@ logger_main = logging.getLogger(__name__)
 
 
 @runtime_checkable
-class Connector(Protocol):
+class ConnectorProtocol(Protocol):
     """Protocol class for connector object.
 
     :param queue: Shared queue object.
@@ -122,7 +122,7 @@ class SfdcConnector():
     def _intercept_sid(self) -> str:
         """Intercepts sid from MS Edge's CookieJar.
 
-        :return: Intercepted `sid` or empty string if `sid` doesn't exist.
+        :return: Intercepted ``sid`` or empty string if ``sid`` doesn't exist.
         :rtype: str
         """
 
@@ -142,9 +142,9 @@ class SfdcConnector():
             return ""
 
     def _open_sfdc_site(self) -> None:
-        """Opens SFDC website on given domain url if `sid`
-
+        """Opens SFDC website on given domain url if ``sid`` is not present or not valid.
         """
+        
         logger_main.warning(
             'SID not valid! -> Login to SFDC -> SalesForce webpage will open shortly')
 
@@ -211,7 +211,7 @@ class SfdcConnector():
     def _parse_report_url(self, report: ReportProtocol) -> str:
         """Parses report object url.
 
-        :param report: Instance of `ReportProtocol`.
+        :param report: Instance of ``ReportProtocol``.
         :type report: ReportProtocol
         :return: Parsed url.
         :rtype: str
@@ -221,12 +221,12 @@ class SfdcConnector():
     
     async def _request_report(self, report: ReportProtocol, session: aiohttp.ClientSession) -> None:
         """Sends asynchronous request to given domain with given parameters within shared session. Checks response status:
-        - 200: response is saved in `ReportProtocol.response`, `ReportProtocol.valid` set to True, ReportProtocol is being put to the `queue`.
-        - 404: error in response, `ReportProtocol.valid` set to False, no retries.
-        - 500: request timeour, `ReportProtocol.valid` set to False, another attempt.
-        - *: unknown error, `ReportProtocol.valid` set to False, another attempt.
+        - 200: response is saved in ``ReportProtocol.response``, ``ReportProtocol.valid`` set to True, ReportProtocol is being put to the ``queue``.
+        - 404: error in response, ``ReportProtocol.valid`` set to False, no retries.
+        - 500: request timeour, ``ReportProtocol.valid`` set to False, another attempt.
+        - *: unknown error, ``ReportProtocol.valid`` set to False, another attempt.
 
-        :param report: Instance of `ReportProtocol`.
+        :param report: Instance of ``ReportProtocol``.
         :type report: ReportProtocol
         :param session: Shared session object.
         :type session: aiohttp.ClientSession
@@ -294,7 +294,7 @@ class SfdcConnector():
     def _create_async_tasks(self, reports: list[ReportProtocol], session: aiohttp.ClientSession) -> list[asyncio.Task]:
         """Creates collection of asynchronous request tasks. 
 
-        :param reports: Collection of `ReportsProtocol' instances.
+        :param reports: Collection of ``ReportsProtocol`` instances.
         :type reports: list[ReportProtocol]
         :param session: Shared, asynchronous session.
         :type session: aiohttp.ClientSession
@@ -308,7 +308,7 @@ class SfdcConnector():
     async def _report_request_all(self, reports: list[ReportProtocol], session: aiohttp.ClientSession) -> None:
         """Orchestrates entire process of processing tasks.
 
-        :param reports: Collection of `ReportProtocol` instances.
+        :param reports: Collection of ``ReportProtocol`` instances.
         :type reports: list[ReportProtocol]
         :param session: Shared asyncio session.
         :type session: aiohttp.ClientSession
@@ -325,7 +325,7 @@ class SfdcConnector():
     async def handle_requests(self, reports: list[ReportProtocol]) -> None:
         """Creates session and process asynchronous tasks.
 
-        :param reports: Collection of `ReportProtocol` instances.
+        :param reports: Collection of ``ReportProtocol`` instances.
         :type reports: list[ReportProtocol]
         """
 

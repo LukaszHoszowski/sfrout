@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.11
 
 """
-sfrout is a scalable, asynchronous SalesForce report downloader for SAML/SSO clients. The app allows you to download reports based on their ID 
+SFrout is a scalable, asynchronous SalesForce report downloader for SAML/SSO clients. The app allows you to download reports based on their ID 
 using your personal SFDC account. Supports asynchronous requests, threaded processing of the files, logging to rotating file and stdout, produces 
 summary report for the session. 
 """
@@ -12,11 +12,11 @@ import logging
 
 from queue import Queue
 
-from .components.connectors import SfdcConnector
-from .components.containers import ReportsContainer
-from .components.handlers import WorkerFactory
-from .components.config import Config
-from .components.loggers import logger_configurer
+from sfrout.components.connectors import SfdcConnector
+from sfrout.components.containers import ReportsContainer
+from sfrout.components.handlers import WorkerFactory
+from sfrout.components.config import Config
+from sfrout.components.loggers import logger_configurer
 
 
 def run(*,
@@ -34,9 +34,9 @@ def run(*,
         ) -> None:
     """Main function of the program.
 
-    :param domain: SalesForce domain of your organization -> "https://corp.my.salesforce.com/"
+    :param domain: SalesForce domain of your organization -> `"https://corp.my.salesforce.com/"`
     :type domain: str    
-    :param reports_path: Path to reports.csv file, template -> https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv
+    :param reports_path: Path to reports.csv file, template -> `Template <https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv>`_
     :type reports_path: str
     :param reports_list: List of the reports as dictionaries -> ``[{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}]``
     :type reports_list: list[dict[str, str]]
@@ -56,6 +56,11 @@ def run(*,
     :type file_loglevel: str 
     :param verbose: Toggles between Progress Bar and stdout logging (Default: ``False``)
     :type verbose: bool
+
+    Usage::
+    
+        import sfrout
+        sfrout.run(domain="https://corp.my.salesforce.com/", reports_path="C:/path/to/reports.csv")
     """
 
     t0 = time.time()
