@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced usage &mdash; sfrout 0.0.7 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How does it work?" href="how.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sfrout
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation of SFrout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#complete-script">Complete script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#let-s-disassemble-it">Let’s disassemble it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#there-is-something-more">There is something more!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how.html">How does it work?</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Internals</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sfrout</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Advanced usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/advanced.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-usage">
+<span id="advanced"></span><h1>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading"></a></h1>
+<p>Let’s have a look at entire palette of options offered by <strong>SFrout</strong>.</p>
+<section id="complete-script">
+<h2>Complete script<a class="headerlink" href="#complete-script" title="Permalink to this heading"></a></h2>
+<p>Import:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sfrout</span>
+
+
+<span class="n">sfrout</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="s2">&quot;https://corp.my.salesforce.com/&quot;</span><span class="p">,</span>
+           <span class="n">reports_path</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">path</span><span class="se">\\</span><span class="s2">to</span><span class="se">\\</span><span class="s2">reports.csv&quot;</span><span class="p">,</span>
+           <span class="n">summary_filepath</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">path</span><span class="se">\\</span><span class="s2">to</span><span class="se">\\</span><span class="s2">summary.csv&quot;</span><span class="p">,</span>
+           <span class="n">log_path</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">path</span><span class="se">\\</span><span class="s2">to</span><span class="se">\\</span><span class="s2">log&quot;</span><span class="p">,</span>
+           <span class="n">path</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\n</span><span class="s2">ew_reports&quot;</span><span class="p">,</span>
+           <span class="n">threads</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">stdout_loglevel</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+           <span class="n">file_loglevel</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span>
+           <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>CLI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sfrout &quot;https://corp.my.salesforce.com/&quot; &quot;C:\\path\\to\\reports.csv&quot;
+        -s &quot;C:\\path\\to\\summary.csv&quot;
+        -l &quot;C:\\path\\to\\log&quot;
+        -p &quot;C:\new_reports&quot;
+        -t 2
+        -ls INFO
+        -lf DEBUG
+</pre></div>
+</div>
+<p>Both codes behave exactly the same. CLI module is equiped with help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sfrout -h
+</pre></div>
+</div>
+<p>CLI help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Options</span><span class="p">:</span>
+    <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">--</span><span class="n">summary_filepath</span> <span class="n">PATH</span>  <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">summary</span> <span class="n">report</span> <span class="o">-&gt;</span>
+                                <span class="n">c</span><span class="p">:</span><span class="o">/</span><span class="n">summary_report</span><span class="o">.</span><span class="n">csv</span>
+    <span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="o">--</span><span class="n">log_path</span> <span class="n">PATH</span>         <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">log</span> <span class="n">file</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">:</span><span class="o">/</span><span class="n">log</span>
+    <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="o">--</span><span class="n">report</span> <span class="n">TEXT</span>            <span class="n">Run</span> <span class="n">single</span> <span class="n">report</span> <span class="o">-&gt;</span>
+                                <span class="s2">&quot;name,id,path,optional_report_params&quot;</span>
+    <span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="o">--</span><span class="n">path</span> <span class="n">PATH</span>              <span class="n">Override</span> <span class="n">save</span> <span class="n">location</span> <span class="n">of</span> <span class="n">the</span> <span class="n">reports</span>
+    <span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="o">--</span><span class="n">threads</span> <span class="n">INTEGER</span>        <span class="n">Number</span> <span class="n">of</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">spawn</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="o">-</span><span class="n">ls</span><span class="p">,</span> <span class="o">--</span><span class="n">stdout_loglevel</span> <span class="n">TEXT</span>  <span class="n">STDOUT</span> <span class="n">logging</span> <span class="n">level</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">DEBUG</span> <span class="o">|</span> <span class="n">INFO</span> <span class="o">|</span> <span class="n">WARN</span>
+                                <span class="o">|</span><span class="n">WARNING</span> <span class="o">|</span> <span class="n">ERROR</span> <span class="o">|</span> <span class="n">CRITICAL</span><span class="p">]</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span>
+                                <span class="n">WARNING</span><span class="p">]</span>
+    <span class="o">-</span><span class="n">lf</span><span class="p">,</span> <span class="o">--</span><span class="n">file_loglevel</span> <span class="n">TEXT</span>    <span class="n">File</span> <span class="n">logging</span> <span class="n">level</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">DEBUG</span> <span class="o">|</span> <span class="n">INFO</span> <span class="o">|</span> <span class="n">WARN</span><span class="o">|</span>
+                                <span class="n">WARNING</span> <span class="o">|</span> <span class="n">ERROR</span> <span class="o">|</span> <span class="n">CRITICAL</span><span class="p">]</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">INFO</span><span class="p">]</span>
+    <span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">--</span><span class="n">verbose</span>                <span class="n">Turn</span> <span class="n">off</span> <span class="n">progress</span> <span class="n">bar</span>
+    <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>                   <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="let-s-disassemble-it">
+<h2>Let’s disassemble it!<a class="headerlink" href="#let-s-disassemble-it" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">summary_filepath</span></code> (-s) - saves summary report with all the details regarding your reports in given location</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log_path</span></code> (-l) - saves log file in given location</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code> (-p) - overrides save path for your reports to given location</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">threads</span></code> (-t) - allows you to enter number of workers to be spawned for IO operations. By default it’s equal to half of available threads. Bare in mind that if threads &gt; max(threads) it may degraded the performance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stdout_loglevel</span></code> (-ls) - let you decide your stdout logs granularity. Default: WARNING</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_loglevel</span></code> (-lf) - let you decide your file logs granularity. Default: INFO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> (-v) - toggle between Progress Bar and stdout logging, once selected sets stdout_loglevel to INFO, otherwise ERROR. Stdout_loglevel if set overrides default setup of verbose regarding loglevel.</p></li>
+</ul>
+</section>
+<section id="there-is-something-more">
+<h2>There is something more!<a class="headerlink" href="#there-is-something-more" title="Permalink to this heading"></a></h2>
+<p><strong>SFrout</strong> accepts three formats of input report records:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">csv</span></code> - list of reports is csv format</dt><dd><p><a class="reference external" href="https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv">Template</a></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">list</span></code> - list of reports as dictionaries, this option isn’t supported in CLI mode</dt><dd><p><code class="docutils literal notranslate"><span class="pre">[{'name':</span> <span class="pre">'RaportName',</span> <span class="pre">'id':</span> <span class="pre">'00O1V00000999GHES',</span> <span class="pre">'path':</span> <span class="pre">WindowsPath('C:/downloads')}]</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">report</span> <span class="pre">mode</span></code> - string with comma seperated values, like one line from csv</dt><dd><p><code class="docutils literal notranslate"><span class="pre">RaportName,00O1V00000999GHES,C:/downloads</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+<hr class="docutils" />
+<p>Courious how <strong>SFrout</strong> works? Check out the <a class="reference internal" href="how.html#how"><span class="std std-ref">how does it work?</span></a> section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how.html" class="btn btn-neutral float-right" title="How does it work?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Lukasz Hoszowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

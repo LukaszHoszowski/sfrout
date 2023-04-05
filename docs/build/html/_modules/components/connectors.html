@@ -37,8 +37,16 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user/install.html">Installation of SFrout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/advanced.html">Advanced usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/how.html">How does it work?</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Developer Interface</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
@@ -83,8 +91,8 @@
 <span class="n">logger_main</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="nd">@runtime_checkable</span>
-<span class="k">class</span> <span class="nc">Connector</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<div class="viewcode-block" id="ConnectorProtocol"><a class="viewcode-back" href="../../api.html#components.connectors.ConnectorProtocol">[docs]</a><span class="nd">@runtime_checkable</span>
+<span class="k">class</span> <span class="nc">ConnectorProtocol</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol class for connector object.</span>
 
 <span class="sd">    :param queue: Shared queue object.</span>
@@ -99,15 +107,15 @@
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">check_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="ConnectorProtocol.check_connection"><a class="viewcode-back" href="../../api.html#components.connectors.ConnectorProtocol.check_connection">[docs]</a>    <span class="k">def</span> <span class="nf">check_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks connection with given domain.</span>
 
 <span class="sd">        :return: Flag, True if connection is established, False otherwise.</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="o">...</span>
+        <span class="o">...</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">report_gathering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ConnectorProtocol.report_gathering"><a class="viewcode-back" href="../../api.html#components.connectors.ConnectorProtocol.report_gathering">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">report_gathering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Collects asynchronous responses from the servers.</span>
 
 <span class="sd">        :param reports: Collection of ReportProtocol objects.</span>
@@ -115,10 +123,10 @@
 <span class="sd">        :param session: HTTP client session object to handle request in transaction.</span>
 <span class="sd">        :type session: aiohttp.ClientSession</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="o">...</span>
+        <span class="o">...</span></div></div>
 
 
-<div class="viewcode-block" id="SfdcConnector"><a class="viewcode-back" href="../../index.html#components.connectors.SfdcConnector">[docs]</a><span class="k">class</span> <span class="nc">SfdcConnector</span><span class="p">():</span>
+<div class="viewcode-block" id="SfdcConnector"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector">[docs]</a><span class="k">class</span> <span class="nc">SfdcConnector</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Concrete class representing Connector object for SFDC</span>
 
 <span class="sd">    :param queue: Shared queue object.</span>
@@ -165,7 +173,7 @@
 
         <span class="c1"># self.check_connection()</span>
 
-    <span class="k">def</span> <span class="nf">_convert_domain_for_cookies_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._convert_domain_for_cookies_lookup"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._convert_domain_for_cookies_lookup">[docs]</a>    <span class="k">def</span> <span class="nf">_convert_domain_for_cookies_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts domain as key in cookier for sid lookup.</span>
 
 <span class="sd">        :return: Converted url complaiant with cookies keys.</span>
@@ -173,9 +181,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Parsing domain key for cookies&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_parse_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._parse_headers"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._parse_headers">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses headers for request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -183,12 +191,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Authorization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Bearer &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid</span><span class="p">]))</span>
 
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="nf">_intercept_sid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._intercept_sid"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._intercept_sid">[docs]</a>    <span class="k">def</span> <span class="nf">_intercept_sid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Intercepts sid from MS Edge&#39;s CookieJar.</span>
 
-<span class="sd">        :return: Intercepted `sid` or empty string if `sid` doesn&#39;t exist.</span>
+<span class="sd">        :return: Intercepted ``sid`` or empty string if ``sid`` doesn&#39;t exist.</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -205,30 +213,27 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;SID entry not there&quot;</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="k">def</span> <span class="nf">_open_sfdc_site</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens SFDC website on given domain url if `sid`</span>
-
+<div class="viewcode-block" id="SfdcConnector._open_sfdc_site"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._open_sfdc_site">[docs]</a>    <span class="k">def</span> <span class="nf">_open_sfdc_site</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens SFDC website on given domain url if ``sid`` is not present or not valid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">logger_main</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s1">&#39;SID not found! -&gt; Login to SFDC -&gt; SalesForce webpage will open shortly&#39;</span><span class="p">)</span>
-        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="s1">&#39;SID not valid! -&gt; Login to SFDC -&gt; SalesForce webpage will open shortly&#39;</span><span class="p">)</span>
 
         <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Openning SFDC webside to log in to SalesForce&#39;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">webbrowser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_path</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
 
         <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;Starting 30 sec sleep to let user log in to SalesForce&quot;</span><span class="p">)</span>
-        <span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intercept_sid</span><span class="p">()</span>
-            <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;intercepting SID! Hold on tight!&#39;</span><span class="p">)</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="s2">&quot;Starting 20 sec sleep to let user log in to SalesForce&quot;</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
     
-    <span class="k">def</span> <span class="nf">_sid_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._sid_check"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._sid_check">[docs]</a>    <span class="k">def</span> <span class="nf">_sid_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks SID valididty for given SFDC domain.</span>
 
 <span class="sd">        :return: Flag, True if SID was valid, False when wasn&#39;t.</span>
@@ -251,53 +256,51 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sid_valid</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check</span> <span class="o">=</span> <span class="kc">False</span>
-
-            <span class="k">return</span> <span class="kc">False</span>
+            
+            <span class="k">return</span> <span class="kc">False</span></div>
           
-<div class="viewcode-block" id="SfdcConnector.check_connection"><a class="viewcode-back" href="../../index.html#components.connectors.SfdcConnector.check_connection">[docs]</a>    <span class="k">def</span> <span class="nf">check_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector.check_connection"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector.check_connection">[docs]</a>    <span class="k">def</span> <span class="nf">check_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the connection with given domain.</span>
 
 <span class="sd">        :return: Flag, True if connection was successful, False wasn&#39;t.</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;SID checking in progress ...&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_headers</span><span class="p">()</span>
-        
-        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intercept_sid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intercept_sid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sid_check</span><span class="p">()</span>
 
-            <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;SID checking in progress ...&quot;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_open_sfdc_site</span><span class="p">()</span>
-
-            <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;SID found!&#39;</span><span class="p">)</span>
-
-            <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking SID validity&quot;</span><span class="p">)</span>
-            
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid_valid</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_open_sfdc_site</span><span class="p">()</span>
+                
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sid_valid</span><span class="p">:</span>
+                <span class="n">logger_main</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;intercepting SID! Hold on tight!&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intercept_sid</span><span class="p">()</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sid_check</span><span class="p">()</span>
                 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">_parse_report_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">:</span> <span class="n">ReportProtocol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._parse_report_url"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._parse_report_url">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_report_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">:</span> <span class="n">ReportProtocol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses report object url.</span>
 
-<span class="sd">        :param report: Instance of `ReportProtocol`.</span>
+<span class="sd">        :param report: Instance of ``ReportProtocol``.</span>
 <span class="sd">        :type report: ReportProtocol</span>
 <span class="sd">        :return: Parsed url.</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">+</span> <span class="n">report</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="n">report</span><span class="o">.</span><span class="n">export_params</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">+</span> <span class="n">report</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="n">report</span><span class="o">.</span><span class="n">export_params</span></div>
 
     
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">:</span> <span class="n">ReportProtocol</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._request_report"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._request_report">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">:</span> <span class="n">ReportProtocol</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends asynchronous request to given domain with given parameters within shared session. Checks response status:</span>
-<span class="sd">        - 200: response is saved in `ReportProtocol.response`, `ReportProtocol.valid` set to True, ReportProtocol is being put to the `queue`.</span>
-<span class="sd">        - 404: error in response, `ReportProtocol.valid` set to False, no retries.</span>
-<span class="sd">        - 500: request timeour, `ReportProtocol.valid` set to False, another attempt.</span>
-<span class="sd">        - *: unknown error, `ReportProtocol.valid` set to False, another attempt.</span>
+<span class="sd">        - 200: response is saved in ``ReportProtocol.response``, ``ReportProtocol.valid`` set to True, ReportProtocol is being put to the ``queue``.</span>
+<span class="sd">        - 404: error in response, ``ReportProtocol.valid`` set to False, no retries.</span>
+<span class="sd">        - 500: request timeour, ``ReportProtocol.valid`` set to False, another attempt.</span>
+<span class="sd">        - *: unknown error, ``ReportProtocol.valid`` set to False, another attempt.</span>
 
-<span class="sd">        :param report: Instance of `ReportProtocol`.</span>
+<span class="sd">        :param report: Instance of ``ReportProtocol``.</span>
 <span class="sd">        :type report: ReportProtocol</span>
 <span class="sd">        :param session: Shared session object.</span>
 <span class="sd">        :type session: aiohttp.ClientSession</span>
@@ -348,9 +351,9 @@
                     <span class="n">logger_main</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                         <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is invalid, Unknown Error, SFDC respond with status </span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
                     <span class="n">report</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_toggle_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tasks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._toggle_progress_bar"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._toggle_progress_bar">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">_toggle_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tasks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggles between showing progress bar and logging on INFO level.</span>
 
 <span class="sd">        :param tasks: Collection of asynchronous request tasks.</span>
@@ -360,12 +363,12 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             
-            <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="k">await</span> <span class="n">task_</span> <span class="k">for</span> <span class="n">task_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))]</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="k">await</span> <span class="n">task_</span> <span class="k">for</span> <span class="n">task_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))]</span></div>
 
-    <span class="k">def</span> <span class="nf">_create_async_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]:</span>
+<div class="viewcode-block" id="SfdcConnector._create_async_tasks"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._create_async_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">_create_async_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates collection of asynchronous request tasks. </span>
 
-<span class="sd">        :param reports: Collection of `ReportsProtocol&#39; instances.</span>
+<span class="sd">        :param reports: Collection of ``ReportsProtocol`` instances.</span>
 <span class="sd">        :type reports: list[ReportProtocol]</span>
 <span class="sd">        :param session: Shared, asynchronous session.</span>
 <span class="sd">        :type session: aiohttp.ClientSession</span>
@@ -374,12 +377,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating tasks for asynchronous processing&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request_report</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">session</span><span class="p">))</span> <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">reports</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request_report</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">session</span><span class="p">))</span> <span class="k">for</span> <span class="n">report</span> <span class="ow">in</span> <span class="n">reports</span><span class="p">]</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_report_request_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector._report_request_all"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector._report_request_all">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">_report_request_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">],</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Orchestrates entire process of processing tasks.</span>
 
-<span class="sd">        :param reports: Collection of `ReportProtocol` instances.</span>
+<span class="sd">        :param reports: Collection of ``ReportProtocol`` instances.</span>
 <span class="sd">        :type reports: list[ReportProtocol]</span>
 <span class="sd">        :param session: Shared asyncio session.</span>
 <span class="sd">        :type session: aiohttp.ClientSession</span>
@@ -391,12 +394,12 @@
 
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SfdcConnector.handle_requests"><a class="viewcode-back" href="../../index.html#components.connectors.SfdcConnector.handle_requests">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SfdcConnector.handle_requests"><a class="viewcode-back" href="../../api.html#components.connectors.SfdcConnector.handle_requests">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ReportProtocol</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates session and process asynchronous tasks.</span>
 
-<span class="sd">        :param reports: Collection of `ReportProtocol` instances.</span>
+<span class="sd">        :param reports: Collection of ``ReportProtocol`` instances.</span>
 <span class="sd">        :type reports: list[ReportProtocol]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 

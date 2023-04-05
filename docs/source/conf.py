@@ -8,6 +8,8 @@
 
 import os
 import sys
+
+
 sys.path.insert(0, os.path.abspath('../../src/sfrout'))
 
 project = 'sfrout'
@@ -21,8 +23,22 @@ release = '0.0.7'
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.napoleon',
+              'sphinx.ext.autosectionlabel',
+              "sphinx.ext.viewcode",
               'sphinx.ext.duration',
-              'sphinx.ext.coverage']
+              'sphinx.ext.coverage',
+              'sphinx_click.ext']
+
+# autodoc_default_flags = [
+#     'members',
+#     'undoc-members',
+#     'private-members',
+#     'special-members',
+#     'inherited-members',
+#     'show-inheritance'
+# ]
+
+autodoc_member_order = 'bysource'
 
 templates_path = ['_templates']
 exclude_patterns = []

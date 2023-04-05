@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How does it work? &mdash; sfrout 0.0.7 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Internals" href="../api.html" />
+    <link rel="prev" title="Advanced usage" href="advanced.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sfrout
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation of SFrout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How does it work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-requests">Sending requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handler">Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarks">Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#final-remarks">Final remarks</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">Internals</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sfrout</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How does it work?</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/how.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-does-it-work">
+<span id="how"></span><h1>How does it work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this heading"></a></h1>
+<p><strong>SFrout</strong> seems to be simple application which just downloads the files from SFDC. In fact a lot of things is happening under the hood. Let’s try to understand why it isn’t as simple as it looks. Most of the complexity comes with SSO/SAML authentication so let’s start here.</p>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading"></a></h2>
+<p>Authorization and authentication in SFDC is based on <cite>sid</cite> cookie entry for SSO or on security tokens in other cases.</p>
+<p>SFrout will try to connect to CookieJar of your MS Edge browser and find <cite>sid</cite> entry for given domain. If <cite>sid</cite> is not found, the app will open MS Edge browser and request given SFDC domain. You will be asked to log in as usual. After 20 seconds program will retry to find <cite>sid</cite> in your CookieJar. Browsers usually store cookies in SQlite db. This information is not being transfered to db immediately, it can be triggered by closing the browser but it isn’t the most elegant solution. SFrout will ask for <cite>sid</cite> in 2 seconds intervals as long as <cite>sid</cite> will be available. Entire process will repeat as many times as it takes.</p>
+</section>
+<section id="sending-requests">
+<h2>Sending requests<a class="headerlink" href="#sending-requests" title="Permalink to this heading"></a></h2>
+<p>SFDC supports export GET requests by adding <cite>?export=csv&amp;enc=UTF-8&amp;isdtp=p1</cite> to address of your report supplemented with headers and above <cite>sid</cite> entry. In response you will receive CSV-like data stream. Time window for entire operation is fixed and equal to <strong>15 minutes</strong>. If you will not be able to receive response in this narrow time window connection will be forceable shutdown and request cancelled regardless of the stage.</p>
+<p>Requests are send out asynchronously to speed things up and restrain memory consumption to bare minimum. Once request will fail, regardless of that what has caused failure, SFrout will retry. Limit of attempts has been set to <strong>20</strong>. Once request is successful, response is saved in Report object and put to the queue for further processing.</p>
+</section>
+<section id="handler">
+<h2>Handler<a class="headerlink" href="#handler" title="Permalink to this heading"></a></h2>
+<p>Thread based solution for saving request responses to a file.</p>
+<p>File handler spawns workers in separate threads. Number of workers is equal to half of available threads on your machine (e.g. if your cpu has 6 cores and 12 threads SFR will spawn 6 workers). If information about available resources is not reachable it will default to <strong>2</strong>. Such approach will not dramatically slow down other applications on your computer and will secure required resources for SFR. Each worker will observe <cite>Queue</cite>, if something will be put into <cite>Queue</cite> one of the workers will start processing of the report. Bare in mind that each saving operation erases response and content of the report due to memory consumption. <cite>Queue</cite> size is unlimited so sooner or later workers will handle entire workload. Workers will die once <cite>Queue</cite> will send signal that they shouldn’t expect any new items. These workers who are just processing items will finish their jobs and die quietly.</p>
+<p>All files are processed by <cite>Pandas</cite> which gives wide palette of available formats. Unfortunately such flexibility somes with the price. In current shape <cite>Pandas</cite> isn’t the best in saving <cite>csv</cite> files due to <cite>numpy</cite> engine. On top of that <cite>Pandas</cite> is a relatively heavy library. I plan to switch to some other processing engine in the future.</p>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Caution!</strong> SFrout deletes last 5 lines from each response, SFDC adds footer to each data stream. This might be organization specific and require your attention if you plan to use it in your organization.</p></li>
+<li><p>be default number of workers is equal to half of available threads of the machine</p></li>
+<li><p>by default rotating file log is limitted to 3 parts, up to 1_000_000 bytes each</p></li>
+<li><p>progress bar is based on quantity of items and may show incorrect ETA if report’s size vary significantly</p></li>
+<li><p>currently only save to <cite>csv</cite> method is available</p></li>
+</ul>
+</section>
+<section id="benchmarks">
+<h2>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this heading"></a></h2>
+<p>My testing set consist of 33 reports from various universes of SFDC with size between 200 kb to 200 mb. In total 1.4 gb of data.</p>
+<p>Tests were not bounded by network bandwidth. Tests were evaluated on i7-8850H, DDR4 32 gb, Windows 10 x64.</p>
+<p>Processing of the testing set vary between 3 and 8 minutes, results strongly correlate to SFDC performance on given time. Time of processing is correlated to size of the reports, bigger = longer.</p>
+</section>
+<section id="final-remarks">
+<h2>Final remarks<a class="headerlink" href="#final-remarks" title="Permalink to this heading"></a></h2>
+<p>This app has been created based on environment of my organization. There is alternative way of Authenticating to SFDC based on security token, unfortunately this option was blocked in my organization and only SSO is available.</p>
+<p>That’s it! Shortly after executing the command <strong>SFrout</strong> might ask to log in to SFDC in MS Edge. Once you authenticate entire process will start, progres bar will show up. Once <strong>SFrout</strong> finishes you will see conveninent table with summary. Shortly after your reports will be dropped to given location.
+Time required for entire operation is impacted by report size, bandwidth of your internet connection and current SFDC condition.</p>
+<hr class="docutils" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="advanced.html" class="btn btn-neutral float-left" title="Advanced usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api.html" class="btn btn-neutral float-right" title="Internals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Lukasz Hoszowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
