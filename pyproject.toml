@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sfrout"
-version = "0.0.13"
+version = "0.0.14"
 authors = [
   {name="Lukasz Hoszowski", email="lukasz.hoszowski@mail.com"},
 ]
@@ -14,8 +14,8 @@ requires-python = ">=3.11"
 keywords = ["SalesForce", "SFDC", "Report"]
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache-2.0 License",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: Microsoft :: Windows :: Windows 10",
     "Intended Audience :: End Users/Desktop",
 ]
