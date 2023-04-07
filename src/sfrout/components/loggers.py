@@ -1,8 +1,7 @@
 """
-requests.adapters
+sfrout.components.loggers
 ~~~~~~~~~~~~~~~~~
-This module contains the transport adapters that Requests uses to define
-and maintain connections.
+This module contains logger configurer for entire logging process.
 """
 
 import os
@@ -19,12 +18,12 @@ def logger_configurer(*,
     """
     Configures logger settings for file and stdout handlers.
 
-    :param cli_stdout_loglevel: LogLevel for stdout logger handler based on CLI option. Defaults to ERROR.
-    :type cli_stdout_loglevel: str
-    :param cli_file_loglevel: LogLevel for file logger handler based on CLI option. Defaults to INFO.
-    :type cli_stdout_loglevel: str
-    :param verbose: Flag toggling LogLevel for stdout logger handler, if True sets to ERROR, else INFO.
-    :type verbose: str
+    :param stdout_loglevel: LogLevel for stdout logger handler based input.
+    :type stdout_loglevel: str
+    :param file_loglevel: LogLevel for file logger handler based input
+    :type stdout_loglevel: str, optional
+    :param verbose: flag toggling LogLevel for stdout logger handler, if ``True`` sets to ``ERROR`` , else ``INFO``
+    :type verbose: bool, optional
     """
 
     levels = {

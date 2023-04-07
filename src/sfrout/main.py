@@ -29,7 +29,7 @@ def run(*,
         path: str="", 
         threads: int=0, 
         stdout_loglevel: str="WARNING", 
-        file_loglevel: str="WARNING", 
+        file_loglevel: str="INFO", 
         verbose: bool=False
         ) -> None:
     """Main function of the program.
@@ -38,24 +38,24 @@ def run(*,
     :type domain: str    
     :param reports_path: Path to reports.csv file, template -> `Template <https://github.com/LukaszHoszowski/sfrout/blob/main/example/reports-default.csv>`_
     :type reports_path: str
-    :param reports_list: List of the reports as dictionaries -> ``[{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}]``
-    :type reports_list: list[dict[str, str]]
-    :param summary_filepath: File path to summary report -> ``C:/downloads/summary.csv``
-    :type summary_filepath: str
-    :param log_path: Path to log file -> ``C:/downloads/logs/``
-    :type log_path: str
-    :param report: Single report mode -> ``RaportName,00O1V00000999GHES,C:/downloads``
-    :type report: str
-    :param path: Save location path override -> ``C:/new_downloads``
-    :type path: str
-    :param threads: Number of threads to use. (Default: ``half of available threads of the machine``) 
-    :type threads: int
-    :param stdout_loglevel: Log level for stdout logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` (Default: ``WARNING``)
-    :type stdout_loglevel: str
-    :param file_loglevel: Log level for file logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` (Default: ``WARNING``)
-    :type file_loglevel: str 
-    :param verbose: Toggles between Progress Bar and stdout logging (Default: ``False``)
-    :type verbose: bool
+    :param reports_list: List of the reports as dictionaries -> ``[{'name': 'RaportName', 'id': '00O1V00000999GHES', 'path': WindowsPath('C:/downloads')}]`` , defaults to []
+    :type reports_list: list[dict[str, str]], optional
+    :param summary_filepath: File path to summary report -> ``C:/downloads/summary.csv`` , defaults to ""
+    :type summary_filepath: str, optional
+    :param log_path: Path to log file -> ``C:/downloads/logs/`` , defaults to ""
+    :type log_path: str, optional
+    :param report: Single report mode -> ``RaportName,00O1V00000999GHES,C:/downloads`` , defaults to ""
+    :type report: str, optional
+    :param path: Save location path override -> ``C:/new_downloads`` , defaults to ""
+    :type path: str, optional
+    :param threads: Number of threads to use, defaults to 0 
+    :type threads: int, optional
+    :param stdout_loglevel: Log level for stdout logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` , defaults to WARNING
+    :type stdout_loglevel: str, optional
+    :param file_loglevel: Log level for file logging -> ``['critical'|'error'|'warn'|'warning'|'info'|'debug']`` , defaults to INFO
+    :type file_loglevel: str, optional
+    :param verbose: flag, stdout logging if ``True`` , Progress Bar if ``False`` , defaults to False
+    :type verbose: bool, optional
 
     Usage::
     
@@ -89,7 +89,7 @@ def run(*,
 
     queue = Queue()    
 
-    connector = SfdcConnector(queue, 
+    connector = SfdcConnector(queue=queue, 
                               domain=config.domain,
                               verbose=config.verbose)
     connector.check_connection()
@@ -97,7 +97,7 @@ def run(*,
     container = ReportsContainer(config.report_params_list, 
                                  config.summary_filepath)
     
-    WorkerFactory(queue, 
+    WorkerFactory(queue=queue, 
                   threads=config.threads)
 
     asyncio.run(connector.handle_requests(container.reports_list))
@@ -113,3 +113,6 @@ def run(*,
 
     logger_main.info('SFR finished in %s', time.strftime(
         "%H:%M:%S", time.gmtime(t1 - t0)))
+
+if __name__ == '__main__':
+    pass

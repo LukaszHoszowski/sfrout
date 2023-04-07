@@ -72,9 +72,18 @@ Let's have a look under the hood.
    api
 
 
-Indices and tables
-==================
+The Components Documentation
+----------------------------
+
+Let's go even deeper.
+
+.. toctree::
+   :maxdepth: 3
+
+   internals
+
+
+Index
+-----
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

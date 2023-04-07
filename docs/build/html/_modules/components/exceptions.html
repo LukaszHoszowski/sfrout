@@ -44,7 +44,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user/how.html">How does it work?</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Main Interface</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../internals.html">Components</a></li>
 </ul>
 
         </div>
@@ -72,7 +75,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for components.exceptions</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="OutdatedSIDError"><a class="viewcode-back" href="../../api.html#components.exceptions.OutdatedSIDError">[docs]</a><span></span><span class="k">class</span> <span class="nc">OutdatedSIDError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="OutdatedSIDError"><a class="viewcode-back" href="../../internals.html#components.exceptions.OutdatedSIDError">[docs]</a><span></span><span class="k">class</span> <span class="nc">OutdatedSIDError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exception raised for errors in the SID value.</span>
 
@@ -89,7 +92,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="EnvFileNotPresent"><a class="viewcode-back" href="../../api.html#components.exceptions.EnvFileNotPresent">[docs]</a><span class="k">class</span> <span class="nc">EnvFileNotPresent</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="EnvFileNotPresent"><a class="viewcode-back" href="../../internals.html#components.exceptions.EnvFileNotPresent">[docs]</a><span class="k">class</span> <span class="nc">EnvFileNotPresent</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exception raised if the .env file is not present in main directory.</span>
 

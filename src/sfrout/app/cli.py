@@ -12,10 +12,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.argument('reports_path', required=False, type=click.Path(exists=True))
 @click.option('--summary_filepath', '-s', required=False, type=click.Path(exists=True), help='Path to the summary report -> c:/summary_report.csv')
 @click.option('--log_path', '-l', required=False, type=click.Path(exists=True), help='Path to the log file -> c:/log')
-@click.option('--report', '-r', type=click.STRING, help='Run single report -> "name,id,path,optional_report_params"')
+@click.option('--report', '-r', type=click.STRING, help='Run single report -> "name,id,path,optional_report_params" ')
 @click.option('--path', '-p', type=click.Path(exists=True), help='Override save location of the reports')
 @click.option('--threads', '-t', type=click.INT, default=0, show_default=True, help='Number of threads to spawn')
-@click.option('--stdout_loglevel', '-ls', type=click.STRING, default="WARNING", show_default=True, 
+@click.option('--stdout_loglevel', '-ls', type=click.STRING, default='WARNING', show_default=True, 
               help='STDOUT logging level -> [DEBUG | INFO | WARN |WARNING | ERROR | CRITICAL]')
 @click.option('--file_loglevel', '-lf', type=click.STRING, default="INFO", show_default=True, 
               help='File logging level -> [DEBUG | INFO | WARN| WARNING | ERROR | CRITICAL]')
