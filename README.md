@@ -71,11 +71,11 @@ sfrout.run(domain="https://corp.my.salesforce.com/",
 
 - next the progress bar will show up
 
-![Progress Bar](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/progress_bar.png)
+![](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/progress_bar.png?raw=True)
 
 - once finish, **SFrout** will print summary table
 
-![Summary Table](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/summary.png)
+![](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/summary.png?raw=True)
 
 ### CLI
 
@@ -187,7 +187,7 @@ This app has been created based on environment of my organization. There is alte
 
 ## Rich documentation available on [Read the Docs](https://sfrout.readthedocs.io)
 
-[![rtd](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.png)](https://sfrout.readthedocs.io)
+[![](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.png?raw=True)](https://sfrout.readthedocs.io)
 
 ## Release Notes
 
