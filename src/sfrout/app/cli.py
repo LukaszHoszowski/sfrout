@@ -1,7 +1,8 @@
 #!/usr/bin/env python3.11
 
 import click
-from sfrout.main import run
+from sfrout import run
+# main import run
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
