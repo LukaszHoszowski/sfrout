@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.3] - 2023-02-24
+## [0.0.25] - 2023-04-07
+### Added
+- summary table
+- documentation on RTD
+- importable entry point
+- reports in form of list of dicts
+- package
+
+### Changed
+- CLI interface
+- progress bar
+
+## [0.0.4] - 2023-02-24
 ### Added
 - new class -> Config has been added
 
@@ -11,7 +23,7 @@ All notable changes to this project will be documented in this file.
 - everything related to configuration moved to Config
 - documentation
 
-## [0.1.2] - 2023-02-21
+## [0.0.3] - 2023-02-21
 ### Added
 - CLI params handling by Click
 
@@ -21,7 +33,7 @@ All notable changes to this project will be documented in this file.
 - readme
 - some organizational changes to internal structure
 
-## [0.1.1] - 2023-02-18
+## [0.0.2] - 2023-02-18
 ### Added
 - Logging module
 - TQDM progress bar

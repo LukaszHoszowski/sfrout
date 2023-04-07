@@ -185,7 +185,7 @@ Processing of the testing set vary between 3 and 8 minutes, results strongly cor
 
 This app has been created based on environment of my organization. There is alternative way of Authenticating to SFDC based on security token, unfortunately this option was blocked in my organization and only SSO is available. 
 
-## Rich documentation available on [Read the Docs](https://sfrout.readthedocs.io)
+## Documentation available on [Read the Docs](https://sfrout.readthedocs.io)
 
 [![](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.png?raw=True)](https://sfrout.readthedocs.io)
 
