@@ -12,11 +12,11 @@ import logging
 
 from queue import Queue
 
-from sfrout.components.connectors import SfdcConnector
-from sfrout.components.containers import ReportsContainer
-from sfrout.components.handlers import WorkerFactory
-from sfrout.components.config import Config
-from sfrout.components.loggers import logger_configurer
+from .components.connectors import SfdcConnector
+from .components.containers import ReportsContainer
+from .components.handlers import WorkerFactory
+from .components.config import Config
+from .components.loggers import logger_configurer
 
 
 def run(*,
