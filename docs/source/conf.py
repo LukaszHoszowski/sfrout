@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath('../../src/sfrout'))
 project = 'sfrout'
 copyright = '2023, Lukasz Hoszowski'
 author = 'Lukasz Hoszowski'
-release = '0.0.7'
+release = '0.0.17'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
