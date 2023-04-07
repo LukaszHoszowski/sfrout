@@ -131,6 +131,27 @@ class Config:
 
         return object_kwargs
 
+    def _input_report_export_params_adj(self, object_kwargs: list[dict[str, Any]]) -> list[dict[str, str | os.PathLike]]:
+        """Deletes ``export_params`` key if no value. 
+
+        :param object_kwargs: colection of report parameters
+        :type object_kwargs: list[dict[str, Any]]
+        :return: collection of report parameters 
+        :rtype: list[dict[str, str | :class:`os.PathLike`]]
+        """
+
+        logger_main.debug(
+            'Parsing input reports - export parameters handling')
+        
+        for dict in object_kwargs:
+            if not dict.get('export_params'):
+                try:
+                    del dict['export_params']
+                except KeyError:
+                    pass
+
+        return object_kwargs
+
     def _input_report_single_mode_override(self) -> list[dict[str, str]]:
         """Creates report's parameters in single report mode. Returns parsed parameters as object kwargs. 
 
@@ -201,6 +222,8 @@ class Config:
                 _temp_report_params)
 
         logger_main.debug('Input reports successfully generated')
+
+        _temp_report_params = self._input_report_export_params_adj(_temp_report_params)
 
         return self._input_report_path_cast(_temp_report_params)
     
