@@ -67,7 +67,7 @@ sfrout.run(domain="https://corp.my.salesforce.com/",
 "c:/path/to/your/file.py"
 ```
 
-- shortly after you might be prompted to log in to SalesForce in MS Edge, webside will open automatically
+- shortly after you might be prompted to log in to SalesForce in MS Edge, website will open automatically
 
 - next the progress bar will show up
 

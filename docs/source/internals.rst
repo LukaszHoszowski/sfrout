@@ -33,7 +33,7 @@ Handlers
     :members:
     :private-members:
 
-Excpetions
+Exceptions
 ----------
 .. automodule:: components.exceptions
     :members:
