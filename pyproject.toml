@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sfrout"
-version = "0.0.22"
+version = "0.0.23"
 authors = [
   {name="Lukasz Hoszowski", email="lukasz.hoszowski@mail.com"},
 ]
