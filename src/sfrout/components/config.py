@@ -97,7 +97,7 @@ class Config:
             ',') if report else []
         self.path: str = path
         self.threads: int = threads
-        self.keys: list[str] = ['name', 'id', 'path', 'params']
+        self.keys: list[str] = ['name', 'id', 'path', 'export_params']
         self.report_params_list: list[dict[str,
                                            str | Path]] = self._parse_input_report()
         self.threads: int = self._define_number_of_threads()

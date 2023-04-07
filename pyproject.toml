@@ -35,6 +35,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/LukaszHoszowski/sfrout"
 "Bug Tracker" = "https://github.com/LukaszHoszowski/sfrout/issues"
+"Documentation" = "https://sfrout.readthedocs.io"
 
 [project.scripts]
 sfrout = "sfrout.app.cli:cli"
