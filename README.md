@@ -73,7 +73,7 @@ sfrout.run(domain="https://corp.my.salesforce.com/",
 
 ![Progress Bar](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/progress_bar.PNG)
 
-- once finish **SFrout** will print summary table
+- once finish, **SFrout** will print summary table
 
 ![Summary Table](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/summary.PNG)
 
@@ -187,7 +187,7 @@ This app has been created based on environment of my organization. There is alte
 
 ## Rich documentation available on [Read the Docs](https://sfrout.readthedocs.io)
 
-![rtd](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.PNG)
+[![rtd](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.PNG)](https://sfrout.readthedocs.io)
 
 ## Release Notes
 
