@@ -19,9 +19,9 @@ logger_main = logging.getLogger(__name__)
 class WorkerFactoryProtocol(Protocol):
     """Protocol class for worker factory objects.
 
-    :param queue: Shared, thread-safe queue.
-    :type queue: Queue
-    :param threads: Number of threads, equal to number of Workers to be deployed.
+    :param queue: shared, thread-safe queue object
+    :type queue: :class:`Queue`
+    :param threads: number of threads, equal to number of :class:`WorkerProtocol` to be deployed
     :type threads: int
     """
 
@@ -29,15 +29,15 @@ class WorkerFactoryProtocol(Protocol):
     threads: int
 
     def create_workers(self) -> None:
-        """Creates workers on independent threads
+        """Creates :class:`WorkerProtocol` on independent threads
         """
         ...
 
     @staticmethod
     def active_workers() -> int:
-        """Counts active works in current time.
+        """Counts active :class:`WorkerProtocol` in current time.
 
-        :return: Number of active workers.
+        :return: number of active :class:`WorkerProtocol` objects
         :rtype: int
         """
         ...
@@ -45,48 +45,48 @@ class WorkerFactoryProtocol(Protocol):
 
 @runtime_checkable
 class WorkerProtocol(Protocol):
-    """Protocol class for worker factory objects.
+    """Protocol class for worker objects.
 
-    :param queue: Shared, thread-safe queue.
-    :type queue: Queue
+    :param queue: shared, thread-safe queue object
+    :type queue: :class:`Queue`
     """
 
     def _read_stream(self, report: ReportProtocol) -> None:
-        """Reads the stream of data kept in Report object via Pandas read method. Deletes response content from the object.
+        """Reads the stream of data kept in :class:`ReportProtocol` object via Pandas read method. Deletes response content from the object.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
         ...
 
     def _save_to_csv(self, report: ReportProtocol) -> None:
-        """Saves readed data to CSV file using Pandas save method.
+        """Saves readed data to ``csv`` file using Pandas save method.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
         ...
 
     def _erase_report(self, report: ReportProtocol) -> None:
         """Erases the report data.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
         ...
 
     def report_processing(self, report: ReportProtocol) -> None:
-        """Orchiestrates the report processing.
+        """Orchiestrates the :class:`ReportProtocol` processing.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
         ...
 
     def run(self) -> NoReturn:
-        """Starts listner process on sepearet thread, awaits objects in the queue.
+        """Starts listner process on separate thread, awaits objects in the queue.
 
-        :return: Method never returns.
+        :return: method never returns
         :rtype: NoReturn
         """
         ...
@@ -94,18 +94,18 @@ class WorkerProtocol(Protocol):
 
 class WorkerFactory:
     """Concrete class representing WorkerFactory object.
+    
+    :param queue: shared, thread-safe queue object
+    :type queue: :class:`Queue`
+    :param threads: number of threads, equal to number of :class:`WorkerProtocol` to be deployed, defaults to 1
+    :type threads: int, optional
     """
-
     def __init__(self,
-                 queue: Queue,
                  *,
+                 queue: Queue,
                  threads: int = 1):
         """Constructor method for WorkerFactory, automatically creates and deploys workers after initialization.
-
-        :param queue: Shared, thread-safe queue.
-        :type queue: Queue
-        :param threads: Number of threads, equal to number of Workers to be deployed. Defaults to 1.
-        :type threads: int
+        Automatically creates :class:`WorkerProtocol` during initialization.
         """
 
         self.queue: Queue = queue
@@ -114,7 +114,7 @@ class WorkerFactory:
         self.create_workers()
 
     def create_workers(self) -> None:
-        """Deploys given number of workers.
+        """Deploys given number of :class:`WorkerProtocol`.
         """
 
         for num in range(self.threads):
@@ -127,9 +127,9 @@ class WorkerFactory:
 
     @staticmethod
     def active_workers() -> int:
-        """Returns number of currently active workers.
+        """Returns number of currently active :class:`WorkerProtocol`.
 
-        :return: Number of workers.
+        :return: number of :class:`WorkerProtocol`
         :rtype: int
         """
         return active_count() - 1
@@ -142,18 +142,18 @@ class Worker(Thread):
     def __init__(self, queue: Queue):
         """Constructor method for Worker.
 
-        :param queue: Shared, thread-safe queue.
-        :type queue: Queue
+        :param queue: shared, thread-safe queue object
+        :type queue: :class:`Queue`
         """
 
         Thread.__init__(self)
         self.queue = queue
 
     def _read_stream(self, report: ReportProtocol) -> None:
-        """Reads report's response and save it as `content` atribute. Erases saved response. 
+        """Reads :class:`ReportProtocol` ``response`` and save it as ``content`` atribute. Erases saved ``response``. 
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
 
         logger_main.debug('Reading content of %s', report.name)
@@ -177,18 +177,18 @@ class Worker(Thread):
     def _parse_save_path(self, report: ReportProtocol) -> os.PathLike:
         """Parses path to save location.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object.
+        :type report: :class:`ReportProtocol`
         :return: Path to save location
-        :rtype: os.PathLike
+        :rtype: :class:`os.PathLike`
         """
         return Path(f'{"/".join([str(report.path), report.name])}.csv')
 
     def _save_to_csv(self, report: ReportProtocol) -> None:
-        """Saves report content to CSV file. Sets object flags.
+        """Saves :class:`ReportProtocol` ``content`` to ``csv`` file. Sets object flags.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
 
         file_path = self._parse_save_path(report)
@@ -221,10 +221,10 @@ class Worker(Thread):
         return None
 
     def _erase_report(self, report: ReportProtocol) -> None:
-        """Deletes report content in ReportProtocol object.
+        """Deletes :class:`ReportProtocol` object ``content`` .
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
 
         logger_main.debug('Deleting response and content for %s', report.name)
@@ -235,8 +235,8 @@ class Worker(Thread):
     def process_report(self, report: ReportProtocol) -> None:
         """Orchiestrates entire process of downloading the report.
 
-        :param report: Instance of the ReportProtocol object.
-        :type report: ReportProtocol
+        :param report: instance of the :class:`ReportProtocol` object
+        :type report: :class:`ReportProtocol`
         """
 
         if report.valid:
@@ -248,9 +248,9 @@ class Worker(Thread):
         return None
 
     def run(self) -> NoReturn:
-        """begins to listen to the queue. Starts processing once will get item from the queue. Sends signal to the queue once task is done.
+        """Starts to listen to the queue. Starts processing once will get item from the queue. Sends signal to the queue once task is done.
 
-        :return: Function never returns.
+        :return: function never returns
         :rtype: NoReturn
         """
 

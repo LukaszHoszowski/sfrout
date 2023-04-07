@@ -11,14 +11,28 @@ logger_main = logging.getLogger(__name__)
 class ConfigProtocol(Protocol):
     """Protocol class for config object.
 
-    :param reports_list_path: CLI argument for input report list path.
-    :type reports_list_path: str
-    :param report: CLI argument for single report params.
+    :param domain: argument for SFDC domain
+    :type domain: str
+    :param reports_csv_path: argument for input report csv path.
+    :type reports_csv_path: str
+    :param reports_list: argument for list of reports as dictionary
+    :type reports_list: list[dict[str, Any]]
+    :param summary_filepath: argument for summary file path
+    :type summary_filepath: str
+    :param log_filepath: argument for log file path
+    :type log_filepath: str
+    :param report: argument for single report parameters
     :type report: str
-    :param path: CLI argument for save location path override.
+    :param path: argument for save location path override
     :type path: str
-    :param threads: CLI argument for number of threads to use.
+    :param threads: argument for number of threads to use
     :type threads: int
+    :param stdout_loglevel: argument for stdout log level
+    :type stdout_loglevel: str
+    :param file_loglevel: argument for stdout log level
+    :type file_loglevel: str
+    :param verbose: Flag, toggles progress bar/stdout
+    :type verbose: bool
     """
 
     domain: str
@@ -36,14 +50,28 @@ class ConfigProtocol(Protocol):
 class Config:
     """Concrete class representing Config object. Contains entire configuration required for a program.
     
-    :param reports_list_path: CLI argument for input report list path.
-    :type reports_list_path: str
-    :param report: CLI argument for single report params.
-    :type report: str
-    :param path: CLI argument for save location path override.
-    :type path: str
-    :param threads: CLI argument for number of threads to use.
-    :type threads: int
+    :param domain: argument for SFDC domain
+    :type domain: str
+    :param reports_csv_path: argument for input report csv path.
+    :type reports_csv_path: str
+    :param reports_list: argument for list of reports as dictionary, defaults to []
+    :type reports_list: list[dict[str, Any]], optional
+    :param summary_filepath: argument for summary file path, defaults to None
+    :type summary_filepath: str, optional
+    :param log_filepath: argument for log file path, defaults to None
+    :type log_filepath: str, optional
+    :param report: argument for single report parameters, defaults to ""
+    :type report: str, optional
+    :param path: argument for save location path override, defaults to ""
+    :type path: str, optional
+    :param threads: argument for number of threads to use, defaults to 0
+    :type threads: int, optional
+    :param stdout_loglevel: argument for stdout log level, defaults to "WARNING"
+    :type stdout_loglevel: str, optional
+    :param file_loglevel: argument for stdout log level, defaults to "INFO"
+    :type file_loglevel: str, optional
+    :param verbose: Flag, toggles progress bar/stdout, defaults to False
+    :type verbose: bool, optional
     """
 
     def __init__(self,
@@ -81,83 +109,82 @@ class Config:
     
     def _define_number_of_threads(self):
         """Defines number of threads. By default number of threads is set to half of available threads.
-        If threads value is not available number of threds will be set to 2. 
-        If threads number has been defined in CLI configuration threads will be equal to this number. 
-        If CLI report is filled (single report mode) then number of threads will be automatically set to 1  
+        If threads value is not available number of threds will be set to 2.  
+        If ``report`` parameter is filled (single report mode) then number of threads will be automatically set to 1.
         """
 
         return (int((os.cpu_count() or 4) / 2) if not self.threads else self.threads) if not self.report else 1
 
     def _input_report_path_cast(self, object_kwargs: list[dict[str, Any]]) -> list[dict[str, str | os.PathLike]]:
-        """Casts value of `path` key into Path object. 
+        """Casts value of ``path`` into :class:`Path` object. 
 
-        :param object_kwargs: Colection of object parameters
+        :param object_kwargs: colection of report parameters
         :type object_kwargs: list[dict[str, Any]]
-        :return: Collection of object parameters with `path` casted to Path object 
-        :rtype: list[dict[str, str | PathLike]]
+        :return: collection of object parameters with `path` casted to :class:`Path` object 
+        :rtype: list[dict[str, str | :class:`os.PathLike`]]
         """
 
         logger_main.debug(
-            "Parsing input reports - casting 'path' to Path object")
+            'Parsing input reports - casting "path" to Path object')
 
         [dict.update({'path': Path(dict['path'])}) for dict in object_kwargs]
 
         return object_kwargs
 
     def _input_report_single_mode_override(self) -> list[dict[str, str]]:
-        """Reads parameters taken from CLI. Returns parsed parameters into object kwargs. 
+        """Creates report's parameters in single report mode. Returns parsed parameters as object kwargs. 
 
-        :return: collection of single object kwargs (parameters) based on CLI argument
+        :return: collection of report's parameters in single report mode
         :rtype: list[dict[str, str]]
         """
 
-        logger_main.debug("Parsing input reports - single mode report")
+        logger_main.debug('Parsing input reports - single mode report')
 
         if len(self.report) != 4:
             logger_main.debug(
-                "Parsing input reports - single mode report | optional_params not present")
+                'Parsing input reports - single mode report | optional_params not present')
             self.report.append('')
 
         return [dict(zip(self.keys, self.report))]
 
     def _input_report_csv_standard_file_mode(self) -> list[dict[str, str]]:
-        """Reads parameteres taken from input CSV. Returns parsed parameters into objects kwargs.
+        """Reads parameteres taken from input `csv` . Returns parsed parameters as objects kwargs.
 
-        :return: collection of objects kwargs (parameters) based on input CSV
+        :return: collection of report's parameters in standard mode
         :rtype: list[dict[str, str]]
         """
 
-        logger_main.debug("Parsing input reports - standard csv mode report")
+        logger_main.debug('Parsing input reports - standard csv mode report')
         with open(self.reports_csv_path) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             logger_main.debug(
-                "Parsing input reports - standard csv mode report - skipping header")
+                'Parsing input reports - standard csv mode report - skipping header')
             next(csv_reader)
 
             return [dict(zip(self.keys, values)) for values in csv_reader]
 
     def _input_report_path_override(self, object_kwargs: list[dict[str, str]]) -> list[dict[str, str]]:
-        """Replaces value of `path` kwarg parameter of the object with `path` value from CLI argument.
+        """Replaces value of `path` key in `object_kwargs` dict with `path` parameter value. `path` override.
 
-        :param object_kwargs: Colection of object parameters
+        :param object_kwargs: Colection of report parameters
         :type object_kwargs: list[dict[str, str]]
-        :return: Collection of object parameters with `path` replaced with value of `path` CLI argument 
+        :return: Collection of report's parameters with replaced `path` 
         :rtype: list[dict[str, str]]
         """
 
-        logger_main.debug("Parsing input reports - report path override")
+        logger_main.debug('Parsing input reports - report path override')
         [dict.update({'path': self.path}) for dict in object_kwargs]
     
         return object_kwargs
 
     def _parse_input_report(self) -> list[dict[str, Any]]:
-        """Orchestrating function for parsing parameters for input reports.
+        """Orchestrating function which parses parameters for :class:`ReportProtocol` .
 
-        :return: Collection of ready to use object kwargs.
+        :return: Collection of ready to use report kwargs.
         :rtype: list[dict[str, Any]]
         """
 
-        logger_main.debug("Parsing input reports")
+        logger_main.debug('Parsing input reports')
 
         _temp_report_params = ""
 
@@ -173,7 +200,7 @@ class Config:
             _temp_report_params = self._input_report_path_override(
                 _temp_report_params)
 
-        logger_main.debug("Input reports successfully generated")
+        logger_main.debug('Input reports successfully generated')
 
         return self._input_report_path_cast(_temp_report_params)
     
