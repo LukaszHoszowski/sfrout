@@ -67,6 +67,16 @@ sfrout.run(domain="https://corp.my.salesforce.com/",
 "c:/path/to/your/file.py"
 ```
 
+- shortly after you might be prompted to log in to SalesForce in MS Edge, webside will open automatically
+
+- next the progress bar will show up
+
+![Progress Bar](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/progress_bar.PNG)
+
+- once finish **SFrout** will print summary table
+
+![Summary Table](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/summary.PNG)
+
 ### CLI
 
 - open terminal
@@ -174,6 +184,10 @@ Processing of the testing set vary between 3 and 8 minutes, results strongly cor
 ## Final remarks
 
 This app has been created based on environment of my organization. There is alternative way of Authenticating to SFDC based on security token, unfortunately this option was blocked in my organization and only SSO is available. 
+
+## Rich documentation available on [Read the Docs](https://sfrout.readthedocs.io)
+
+![rtd](https://github.com/LukaszHoszowski/sfrout/blob/main/docs/_static/rtd.PNG)
 
 ## Release Notes
 
